@@ -22,18 +22,6 @@ class CompleteStoryNodeResponse(StoryNodeBase):
         from_attribute = True
 
 
-class StoryBase(BaseModel):
-    title: str
-    session_id: Optional[str] = None
-
-    class Config:
-        from_attribute = True
-
-
-class CreateStoryRequest(BaseModel):
-    theme: str
-
-
 class CompleteStoryResponse(StoryNodeBase):
     id: int
     created_at: datetime
