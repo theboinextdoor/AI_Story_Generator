@@ -7,7 +7,7 @@ from core.config import settings
 engine = create_engine(settings.DATABASE_URL)
 
 #! It helps create “sessions” — temporary workspaces to talk to the database
-SessionLocal = sessionmaker(autocommit=False, autoFlush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 #! This is the starting point for your table definitions.

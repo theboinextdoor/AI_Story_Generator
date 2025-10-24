@@ -2,6 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from typing import Any, Dict
+from db.database import create_table
+from routers import story, job
+
+
+create_table()
 
 #! Initializing the FastAPI instance
 app = FastAPI(
@@ -21,6 +26,10 @@ app.add_middleware(
     allow_methods=["*"],  # ? [GET, POST, DELETE, PUT, UPDATE etc.]
     allow_headers=["*"],  # ? Additional informations
 )
+
+#! Routers are defined here :-
+app.include_router(story.router, prefix=settings.API_PREFIX)
+app.include_router(job.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/name")

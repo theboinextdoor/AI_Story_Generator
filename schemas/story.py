@@ -11,7 +11,7 @@ class StoryOptionsSchema(BaseModel):
 class StoryNodeBase(BaseModel):
     content: str
     is_ending: bool = False
-    is_winnig_ending: bool = False
+    is_winning_ending: bool = False
 
 
 class CompleteStoryNodeResponse(StoryNodeBase):
@@ -22,11 +22,45 @@ class CompleteStoryNodeResponse(StoryNodeBase):
         from_attribute = True
 
 
-class CompleteStoryResponse(StoryNodeBase):
+class StoryBase(BaseModel):
+    title: str
+    session_id: Optional[str] = None
+
+    class Config:
+        from_attribute = True
+
+
+class CreateStoryRequest(BaseModel):
+    theme: str
+
+
+class CompleteStoryResponse(StoryBase):
     id: int
     created_at: datetime
     root_node: CompleteStoryNodeResponse
     all_nodes: Dict[int, CompleteStoryNodeResponse]
 
-    class Config:
-        from_attributes = True
+    class Config:  # type: ignore[override]
+        from_attribute = True
+
+
+# CompleteStoryResponse
+# │
+# ├── id (int)
+# ├── created_at (datetime)
+# ├── content (str)
+# ├── is_ending (bool)
+# ├── is_winnig_ending (bool)
+# ├── root_node → CompleteStoryNodeResponse
+# │       ├── id
+# │       ├── content
+# │       ├── is_ending
+# │       ├── is_winnig_ending
+# │       └── options → [StoryOptionsSchema]
+# │                 ├── title
+# │                 └── node_id
+# │
+# └── all_nodes → Dict[int, CompleteStoryNodeResponse]
+#         ├── node_id_1 → { ... same structure ... }
+#         ├── node_id_2 → { ... same structure ... }
+#         └── node_id_3 → { ... same structure ... }
